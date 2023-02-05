@@ -10,6 +10,14 @@ using uScript.Module.Main.Classes;
 [ScriptModule("uEffectManager")]
 public class uEffects
 {
+    [ScriptFunction("sendEffect")]
+    public static void SendEffect( ushort id, string playerId, Vector3Class position)
+    {
+
+        ITransportConnection transportConnection = Provider.findTransportConnection(new CSteamID(ulong.Parse(playerId)));
+        EffectManager.sendEffect(id, transportConnection, position.Vector3);
+    }
+
     [ScriptFunction("triggerEffect")]
     public static void TriggerEffect( ushort id, float range, Vector3Class position)
     {
@@ -23,27 +31,63 @@ public class uEffects
     }
 
     [ScriptFunction("ClearEffectByGuid")]
-    public static void ClearEffectByGuid(ushort id, string playerId)
+    public static void ClearEffectByGuid(string guid, string playerId)
     {
             ITransportConnection transportConnection = Provider.findTransportConnection(new CSteamID(ulong.Parse(playerId)));
-        var asset = Assets.find(EAssetType.EFFECT, id);
-        EffectManager.ClearEffectByGuid(asset.GUID ,transportConnection);
+        EffectManager.ClearEffectByGuid(Guid.Parse(guid), transportConnection);
+        
     }
+
     [ScriptFunction("askEffectClearByID")]
     public static void askEffectClearByID( ushort id, string playerId)
     {
             ITransportConnection transportConnection = Provider.findTransportConnection(new CSteamID(ulong.Parse(playerId)));
             EffectManager.askEffectClearByID(id, transportConnection);
     }
+
     [ScriptFunction("ClearEffectByID_AllPlayers")]
     public static void ClearEffectByID_AllPlayers(ushort id)
     {
         EffectManager.ClearEffectByID_AllPlayers(id);
     }
+
     [ScriptFunction("ClearEffectByGuid_AllPlayers")]
-    public static void ClearEffectByGuid_AllPlayers(ushort id)
+    public static void ClearEffectByGuid_AllPlayers(string guid)
     {
-        var asset = Assets.find(EAssetType.EFFECT, id);
-        EffectManager.ClearEffectByGuid_AllPlayers(asset.GUID);
+        EffectManager.ClearEffectByGuid_AllPlayers(Guid.Parse(guid));
     }
+
+    [ScriptFunction("sendEffectClicked")]
+    public static void sendEffectClicked(string buttonName)
+    {
+        EffectManager.sendEffectClicked(buttonName);
+    }
+
+    [ScriptFunction("sendEffectTextCommitted")]
+    public static void sendEffectTextCommitted(string inputFieldName, string text)
+    {
+        EffectManager.sendEffectTextCommitted(inputFieldName, text);
+    }
+
+    [ScriptFunction("sendEffectReliable")]
+    public static void sendEffectReliable(ushort id, string playerId, Vector3Class position)
+    {
+        ITransportConnection transportConnection = Provider.findTransportConnection(new CSteamID(ulong.Parse(playerId)));
+        EffectManager.sendEffectReliable(id, transportConnection, position.Vector3);
+    }
+
+    [ScriptFunction("sendEffectReliable_NonUniformScale")]
+    public static void sendEffectReliable_NonUniformScale(ushort id, string playerId, Vector3Class position, Vector3Class scale)
+    {
+        ITransportConnection transportConnection = Provider.findTransportConnection(new CSteamID(ulong.Parse(playerId)));
+        EffectManager.sendEffectReliable_NonUniformScale(id, transportConnection, position.Vector3, position.Vector3);
+    }
+
+    [ScriptFunction("askEffectClearAll")]
+    public static void askEffectClearAll()
+    {
+        EffectManager.askEffectClearAll();
+    }
+
+
 }
